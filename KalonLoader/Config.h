@@ -67,11 +67,11 @@ namespace Config {
 
 	inline void LogInfo() {
 		Console::Log(Name.c_str(), "------------------------------");
-		Console::Log(Name.c_str(), Name + " v" + Version);
+		Console::Log(Name.c_str(), Name + " " + Version);
 		Console::Log(Name.c_str(), "OS: " + GetOS());
 		Console::Log(Name.c_str(), "------------------------------");
 		Console::Log(Name.c_str(), "Game Arch: x" + std::to_string(sizeof(void*) * 8)); // probably wont ever use
-		Console::Log(Name.c_str(), "Game Version: " + GetGameVersion());
+		Console::Log(Name.c_str(), "Game Version: v" + GetGameVersion());
 		Console::Log(Name.c_str(), "------------------------------");
 	}
 }

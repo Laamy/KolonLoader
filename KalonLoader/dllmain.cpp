@@ -4,26 +4,61 @@
 #include <fstream>
 #include <filesystem>
 
+#pragma region QuickDLLProxy
+
+#include "Libs/QuickDllProxy/DllProxy.h"
+
+void* ResolveModule()
+{
+	return LoadLibraryA("C:\\windows\\system32\\winhttp.dll");
+}
+
+void ExampleHookedFunction()
+{
+}
+
+bool ResolveFunction(void* Module, uint32_t Ordinal, const char* Name, void** Pointer)
+{
+	// Intercept a specific ordinal
+	if (Ordinal == 23)
+	{
+		*Pointer = &ExampleHookedFunction;
+		return true;
+	}
+
+	// Otherwise resolve it as normal through GetProcAddress
+	auto ptr = GetProcAddress((HMODULE)Module, Name);
+
+	if (!ptr)
+		return false;
+
+	*Pointer = ptr;
+	return true;
+}
+
+void HandleException(DllProxy::ErrorCode Code)
+{
+	char reason[32];
+	sprintf_s(reason, "Error code: %u", Code);
+
+	MessageBoxA(nullptr, reason, "PROXY ERROR", MB_ICONERROR);
+	__debugbreak();
+}
+
+#define DLL_PROXY_EXPORT_LISTING_FILE "winhttp_exports.inc"
+#define DLL_PROXY_CHECK_MISSING_EXPORTS
+#define DLL_PROXY_LIBRARY_RESOLVER_CALLBACK ResolveModule
+#define DLL_PROXY_EXPORT_RESOLVER_CALLBACK ResolveFunction
+#define DLL_PROXY_EXCEPTION_CALLBACK HandleException
+#define DLL_PROXY_DECLARE_IMPLEMENTATION
+
+#pragma endregion
+#include "Libs/QuickDllProxy/DllProxy.h"
+
 #include "Libs/Console.h"
 #include "Libs/FileIO.h"
 
 #include "Config.h"
-
-#pragma region Important Exports
-
-using _D3D11CreateDevice = HRESULT(WINAPI*)(void*, void*, UINT, const void*, UINT, UINT, void**);
-using _D3D11CreateDeviceAndSwapChain = HRESULT(WINAPI*)(void*, void*, UINT, const void*, UINT, UINT, void*, void**, void**, void**);
-using _D3D11On12CreateDevice = HRESULT(WINAPI*)(void*, UINT, const void*, UINT, void*, UINT, void**, void**, void**);
-
-HMODULE d3d11Mod = nullptr;
-
-extern "C" {
-	__declspec(dllexport) _D3D11CreateDevice* D3D11CreateDevice = nullptr;
-	__declspec(dllexport) _D3D11CreateDeviceAndSwapChain* D3D11CreateDeviceAndSwapChain = nullptr;
-	__declspec(dllexport) _D3D11On12CreateDevice* D3D11On12CreateDevice = nullptr;
-}
-
-#pragma endregion
 
 //#define DEBUG
 
@@ -41,15 +76,10 @@ void Init() {
 
 	Console::Log(Config::Name.c_str(), "Initializing..");
 
-	// setup the real module cuz thats important i guess
-	d3d11Mod = LoadLibraryW(L"C:\\Windows\\System32\\d3d11.dll");
-	D3D11CreateDevice = (_D3D11CreateDevice*)GetProcAddress(d3d11Mod, "D3D11CreateDevice");
-	D3D11CreateDeviceAndSwapChain = (_D3D11CreateDeviceAndSwapChain*)GetProcAddress(d3d11Mod, "D3D11CreateDeviceAndSwapChain");
-	D3D11On12CreateDevice = (_D3D11On12CreateDevice*)GetProcAddress(d3d11Mod, "D3D11On12CreateDevice");
-	Console::Log(Config::Name.c_str(), "Restored D3D11 changes");
+	DllProxy::Initialize();
 
 	Config::LogInfo();
-
+	return;
 	// mod loadin crap
 	{
 		Console::Log(Config::Name.c_str(), "Searching for mods folder");

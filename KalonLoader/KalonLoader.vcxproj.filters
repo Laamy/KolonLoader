@@ -29,10 +29,20 @@
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libs\QuickDllProxy\DllProxy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="d3d11.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Libs\QuickDllProxy\DllProxyImpl.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="winhttp_exports.inc">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Libs\QuickDllProxy\README.md" />
   </ItemGroup>
 </Project>

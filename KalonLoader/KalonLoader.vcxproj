@@ -157,9 +157,13 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Libs\Console.h" />
     <ClInclude Include="Libs\FileIO.h" />
+    <ClInclude Include="Libs\QuickDllProxy\DllProxy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="d3d11.def" />
+    <None Include="Libs\QuickDllProxy\DllProxyImpl.inl" />
+    <None Include="Libs\QuickDllProxy\README.md" />
+    <None Include="winhttp_exports.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
