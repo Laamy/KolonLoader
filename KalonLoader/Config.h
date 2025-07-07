@@ -63,7 +63,7 @@ std::string GetGameVersion() {
 
 namespace Config {
 	std::string Name = "KolanLoader";
-	std::string Version = "v0.1.1 Open-Client";
+	std::string Version = "v0.1.2 Open-Client";
 
 	inline void LogInfo() {
 		Console::Log(Name.c_str(), "------------------------------");

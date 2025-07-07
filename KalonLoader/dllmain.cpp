@@ -79,7 +79,7 @@ void Init() {
 	DllProxy::Initialize();
 
 	Config::LogInfo();
-	return;
+
 	// mod loadin crap
 	{
 		Console::Log(Config::Name.c_str(), "Searching for mods folder");
