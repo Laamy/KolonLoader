@@ -39,18 +39,12 @@
     <ClCompile Include="Libs\minhook\trampoline.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Libs\NativeCore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs\Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\FileIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Libs\NativeCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\minhook\buffer.h">

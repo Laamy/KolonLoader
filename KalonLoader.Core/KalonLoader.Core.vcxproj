@@ -151,7 +151,6 @@
     <ClCompile Include="Libs\minhook\hde\hde64.c" />
     <ClCompile Include="Libs\minhook\hook.c" />
     <ClCompile Include="Libs\minhook\trampoline.c" />
-    <ClCompile Include="Libs\NativeCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs\Console.h" />
@@ -164,7 +163,6 @@
     <ClInclude Include="Libs\minhook\hde\table64.h" />
     <ClInclude Include="Libs\minhook\minhook.h" />
     <ClInclude Include="Libs\minhook\trampoline.h" />
-    <ClInclude Include="Libs\NativeCore.h" />
     <ClInclude Include="Libs\_NativeCore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

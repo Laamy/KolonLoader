@@ -55,8 +55,8 @@ void HandleException(DllProxy::ErrorCode Code)
 #pragma endregion
 #include "Libs/QuickDllProxy/DllProxy.h"
 
-#include "Libs/Console.h"
-#include "Libs/FileIO.h"
+#include "Libs/KalonLoader/Console.h"
+#include "Libs/KalonLoader/FileIO.h"
 
 #include "Config.h"
 
@@ -80,12 +80,14 @@ void Init() {
 
 	Config::LogInfo();
 
+	FileIO* files = new FileIO();
+
 	// mod loadin crap
 	{
 		Console::Log(Config::Name.c_str(), "Searching for mods folder");
 
-		FileIO::createPath("mods");
-		auto modsPath = FileIO::getClientPath() + "mods";
+		files->createPath("mods");
+		auto modsPath = files->getRoamingStatePath() + "mods";
 		Console::Log(Config::Name.c_str(), "Loading mods from: %s", modsPath.c_str());
 
 		auto modLibs = std::vector<std::string>();
