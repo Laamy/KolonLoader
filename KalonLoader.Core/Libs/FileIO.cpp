@@ -1,6 +1,8 @@
 #include "FileIO.h"
 
 #include "Console.h"
+#include "NativeCore.h"
+#include "minhook/minhook.h"
 
 #include <iostream>
 #include <fstream>

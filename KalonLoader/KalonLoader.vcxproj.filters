@@ -20,16 +20,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Libs\Console.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Libs\FileIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\QuickDllProxy\DllProxy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\KalonLoader\Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\KalonLoader\FileIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
