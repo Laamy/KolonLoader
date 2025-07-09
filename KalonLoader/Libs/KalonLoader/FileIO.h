@@ -5,6 +5,8 @@
 #include <fstream>
 #include <filesystem>
 
+#include "Console.h"
+
 #ifdef KOLAN_EXPORTS
 #define FILEIO_API __declspec(dllexport)
 #else

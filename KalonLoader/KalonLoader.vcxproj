@@ -166,6 +166,7 @@
     <ClInclude Include="Libs\KalonLoader\Console.h" />
     <ClInclude Include="Libs\KalonLoader\FileIO.h" />
     <ClInclude Include="Libs\QuickDllProxy\DllProxy.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libs\QuickDllProxy\DllProxyImpl.inl" />

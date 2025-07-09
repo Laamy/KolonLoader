@@ -53,14 +53,13 @@ void HandleException(DllProxy::ErrorCode Code)
 #define DLL_PROXY_DECLARE_IMPLEMENTATION
 
 #pragma endregion
+
 #include "Libs/QuickDllProxy/DllProxy.h"
 
 #include "Libs/KalonLoader/Console.h"
-#include "Libs/KalonLoader/FileIO.h"
-
 #include "Config.h"
 
-//#define DEBUG
+#include "Libs/KalonLoader/FileIO.h"
 
 void Init() {
 	Console::CreateConsole(Config::Name.c_str());
@@ -77,33 +76,27 @@ void Init() {
 	Console::Log(Config::Name.c_str(), "Initializing..");
 
 	DllProxy::Initialize();
-
 	Config::LogInfo();
 
-	FileIO* files = new FileIO();
+	auto files = FileIO();
+	auto modsPath = files.getRoamingStatePath() + "mods";
+	std::filesystem::create_directory(modsPath);
 
-	// mod loadin crap
-	{
-		Console::Log(Config::Name.c_str(), "Searching for mods folder");
+	Console::Log(Config::Name.c_str(), "Mods folder found");
+	Console::Log(Config::Name.c_str(), "Loading mods from: %s", modsPath.c_str());
 
-		files->createPath("mods");
-		auto modsPath = files->getRoamingStatePath() + "mods";
-		Console::Log(Config::Name.c_str(), "Loading mods from: %s", modsPath.c_str());
+	std::vector<std::string> modLibs;
+	for (const auto& entry : std::filesystem::directory_iterator(modsPath)) {
+		if (entry.is_regular_file() && entry.path().extension() == ".dll")
+			modLibs.push_back(entry.path().string());
+	}
 
-		auto modLibs = std::vector<std::string>();
-		for (const auto& entry : std::filesystem::directory_iterator(modsPath)) {
-			if (entry.is_regular_file() && entry.path().extension() == ".dll") {
-				modLibs.push_back(entry.path().string());
-			}
-		}
+	Console::Log(Config::Name.c_str(), "Found %d mods", modLibs.size());
 
-		Console::Log(Config::Name.c_str(), "Found %d mods", modLibs.size());
-		for (const auto& mod : modLibs) {
-			Console::Log(Config::Name.c_str(), "Loading mod: %ls", mod.c_str());
-			HMODULE modHandle = LoadLibraryA(mod.c_str());
-			if (!modHandle)
-				Console::Log(Config::Name.c_str(), "ERROR: Failed to load mod: %ls", mod.c_str());
-		}
+	for (const auto& mod : modLibs) {
+		Console::Log(Config::Name.c_str(), "Loading mod: %ls", mod.c_str());
+		if (!LoadLibraryA(mod.c_str()))
+			Console::Log(Config::Name.c_str(), "ERROR: Failed to load mod: %ls", mod.c_str());
 	}
 }
 

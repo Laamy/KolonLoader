@@ -50,6 +50,9 @@
     <ClInclude Include="Libs\KalonLoader\FileIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libs\QuickDllProxy\DllProxyImpl.inl">

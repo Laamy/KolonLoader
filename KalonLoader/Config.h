@@ -46,19 +46,37 @@ std::string GetGameVersion() {
 	DWORD size = GetFileVersionInfoSizeA(path, &handle);
 	if (!size) return {};
 
-	std::vector<char> data(size);
-	if (!GetFileVersionInfoA(path, handle, size, data.data())) return {};
+	std::vector<char> buffer(size);
+	if (!GetFileVersionInfoA(path, handle, size, buffer.data())) return {};
 
-	VS_FIXEDFILEINFO* fileInfo = nullptr;
+	VS_FIXEDFILEINFO* info = nullptr;
 	UINT len = 0;
-	if (!VerQueryValueA(data.data(), "\\", reinterpret_cast<void**>(&fileInfo), &len)) return {};
+	if (!VerQueryValueA(buffer.data(), "\\", reinterpret_cast<void**>(&info), &len)) return {};
+	if (!info) return {};
 
-	if (!fileInfo) return {};
+	WORD major = HIWORD(info->dwFileVersionMS);
+	WORD minor = LOWORD(info->dwFileVersionMS);
+	WORD patch = HIWORD(info->dwFileVersionLS);
 
-	WORD major = HIWORD(fileInfo->dwFileVersionMS);
-	WORD minor = LOWORD(fileInfo->dwFileVersionMS);	
-	WORD patch = HIWORD(fileInfo->dwFileVersionLS);
 	return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+}
+
+// 48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05
+#include "Utils.h"
+std::string GetRoamingState() {
+	static const auto pattern = findSig_MS("48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05");
+	static std::string cache;
+
+	if (!cache.empty())
+		return cache;
+
+	auto offset = *reinterpret_cast<const int32_t*>(pattern + 3);
+	auto base = pattern + offset + 7;
+
+	cache = std::string(reinterpret_cast<const char*>(base));
+	cache = cache.substr(0, cache.size() - strlen("LocalState/")) + "RoamingState/";
+
+	return cache;
 }
 
 namespace Config {
@@ -72,6 +90,7 @@ namespace Config {
 		Console::Log(Name.c_str(), "------------------------------");
 		Console::Log(Name.c_str(), "Game Arch: x" + std::to_string(sizeof(void*) * 8)); // probably wont ever use
 		Console::Log(Name.c_str(), "Game Version: v" + GetGameVersion());
+		Console::Log(Name.c_str(), "Roaming State: " + GetRoamingState());
 		Console::Log(Name.c_str(), "------------------------------");
 	}
 }

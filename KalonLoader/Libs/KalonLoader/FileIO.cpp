@@ -1,7 +1,5 @@
 #include "FileIO.h"
 
-#include "Console.h"
-
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -22,10 +20,12 @@ inline bool FileIO::setupClientPath(std::string clientName)
     return false;
 }
 
+std::string GetRoamingState();
+
 inline std::string FileIO::getRoamingStatePath()
 {
     // might add smth for preview clients
-    return (getenv("AppData") + (std::string)"\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\");
+    return GetRoamingState();//(getenv("AppData") + (std::string)"\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\");
 }
 
 inline std::string FileIO::getClientPath()
