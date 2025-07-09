@@ -58,7 +58,6 @@ void HandleException(DllProxy::ErrorCode Code)
 
 #include "Libs/KalonLoader/Console.h"
 
-#include "Utils.h"
 #include "Libs/KalonLoader/NativeCore.h"
 #include "Config.h"
 
@@ -96,6 +95,7 @@ void Init() {
 
 	Console::Log(Config::Name.c_str(), "Found %d mods", modLibs.size());
 
+	// NOTE: I might check for a registermod export so i can tell mods apart from unsupported mods so i can alert the user that the game will probably break or crash
 	for (const auto& mod : modLibs) {
 		Console::Log(Config::Name.c_str(), "Loading mod: %ls", mod.c_str());
 		if (!LoadLibraryA(mod.c_str()))
