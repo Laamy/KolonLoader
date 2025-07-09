@@ -13,28 +13,40 @@ TUTORIAL: https://youtu.be/FrdvPxKTYr8
 
 # Features
 
-note that you dont actually have to use ANY of these and can just use your own (but it is recommended for compatability with other mods)</br>
-Currently its mostly the bare minimum: <br/>
-* KalonLoader misc features:
-*       Minecraft will freeze up on 33% loaded until all mods have fully loaded (Unless you start a new thread)
-*       Ensures your mod will ALWAYS load with minecraft similar to bepinex
-*       A developer kalonloader that will freeze the game until you attach a debugger
-* ConsoleApi (STATIC):
-*     	static void CreateConsole(const char* title)
-*     	static void Log(std::string modName, std::string format, ...)
-*     	static void Log(const char* modName, const char* format, ...)
-*     	static void CloseConsole()
-*     	static void ClearConsole()
-* FileIOApi (INSTANCE): - some notes on this is that even if its a custom or preview install of minecraft kalon will automatically figure out the correct roamingstate folder for you
-*     	bool setupClientPath(std::string clientName)
-*       bool doesClientPathExist(const std::string& path)
-*       void createPath(const std::string& path)
-*       void deletePath(const std::string& path)
-*       void writeFile(const std::string& filePath, const std::string& content)
-*       std::string getRoamingStatePath()
-*       std::string getClientPath()
-*       std::string readFile(const std::string& filePath, bool noError = false)
-* NativeCore (STATIC): - just compatability stuff for mods that use the same functions
-*       static uintptr_t FetchOffset(const char* sidId, const char* sig)
-*       static bool HookFunction(uintptr_t address, void* hook, void** original)
-*       static bool UnhookFunction(uintptr_t address)
+Note that you don't actually have to use *any* of these and can just use your own (but it is recommended for compatibility with other mods).
+
+Currently it's mostly the bare minimum:
+
+## KalonLoader misc features
+
+- Minecraft will freeze up on 33% loaded until all mods have fully loaded (unless you start a new thread)
+- Ensures your mod will **always** load with Minecraft, similar to BepInEx
+- A developer KalonLoader that will freeze the game until you attach a debugger
+
+## ConsoleApi (STATIC)
+
+- `static void CreateConsole(const char* title)`
+- `static void Log(std::string modName, std::string format, ...)`
+- `static void Log(const char* modName, const char* format, ...)`
+- `static void CloseConsole()`
+- `static void ClearConsole()`
+
+## FileIOApi (INSTANCE)
+
+*Even if it's a custom or preview install of Minecraft, Kalon will automatically figure out the correct roaming state folder for you.*
+
+- `bool setupClientPath(std::string clientName)`
+- `bool doesClientPathExist(const std::string& path)`
+- `void createPath(const std::string& path)`
+- `void deletePath(const std::string& path)`
+- `void writeFile(const std::string& filePath, const std::string& content)`
+- `std::string getRoamingStatePath()`
+- `std::string getClientPath()`
+- `std::string readFile(const std::string& filePath, bool noError = false)`
+
+## NativeCore (STATIC)
+
+*Just compatibility stuff for mods that use the same functions.*
+
+- `static uintptr_t FetchOffset(const_
+
