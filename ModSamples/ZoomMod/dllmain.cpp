@@ -31,6 +31,7 @@ void Init()
 
 	file = FileIO();
 	file.setupClientPath("ZoomMod");
+	file.createPath("sex");
 
 	InitHooks();
 }

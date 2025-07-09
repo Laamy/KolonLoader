@@ -63,6 +63,8 @@ void HandleException(DllProxy::ErrorCode Code)
 
 #include "Libs/KalonLoader/FileIO.h"
 
+//#define DEBUG
+
 void Init() {
 	Console::CreateConsole(Config::Name.c_str());
 
@@ -76,7 +78,7 @@ void Init() {
 #endif
 
 	Console::Log(Config::Name.c_str(), "Initializing..");
-
+	
 	DllProxy::Initialize();
 	Config::LogInfo();
 
