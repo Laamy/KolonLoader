@@ -61,7 +61,8 @@ std::string GetGameVersion() {
 	return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
 }
 
-// 48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05
+// FOR PEOPLE WHO ARE CURIOUS:
+// found the path in cheat engine in a live mc grabbed the static address (cuz there was only 1) threw it into ida and grabbed the sig to the first xref
 #include "Utils.h"
 std::string GetRoamingState() {
 	static const auto pattern = findSig_MS("48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05");
