@@ -48,5 +48,8 @@ Currently it's mostly the bare minimum:
 
 *Just compatibility stuff for mods that use the same functions.*
 
-- `static uintptr_t FetchOffset(const_
+*Just compatibility stuff for mods that use the same functions.*
 
+- `static uintptr_t FetchOffset(const char* sidId, const char* sig)`
+- `static bool HookFunction(uintptr_t address, void* hook, void** original)`
+- `static bool UnhookFunction(uintptr_t address)`
