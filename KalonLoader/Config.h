@@ -63,9 +63,9 @@ std::string GetGameVersion() {
 
 // FOR PEOPLE WHO ARE CURIOUS:
 // found the path in cheat engine in a live mc grabbed the static address (cuz there was only 1) threw it into ida and grabbed the sig to the first xref
-#include "Utils.h"
+// you could also parse near the executable for the file that contains the name but thats alot of code for something that takes 2 seconds to make a permanment sig
 std::string GetRoamingState() {
-	static const auto pattern = findSig_MS("48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05");
+	static const auto pattern = NativeCore::FetchOffset("unk::GetRoamingState", "48 8D 05 ? ? ? ? 48 89 5C 24 ? 48 89 44 24 ? 48 8B 05");
 	static std::string cache;
 
 	if (!cache.empty())
@@ -82,7 +82,7 @@ std::string GetRoamingState() {
 
 namespace Config {
 	std::string Name = "KolanLoader";
-	std::string Version = "v0.1.2 Open-Client";
+	std::string Version = "v0.1.3 Open-Client";
 
 	inline void LogInfo() {
 		Console::Log(Name.c_str(), "------------------------------");

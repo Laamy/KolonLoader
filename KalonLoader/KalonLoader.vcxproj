@@ -153,18 +153,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\KalonLoader.Core\Libs\Console.cpp" />
-    <ClCompile Include="..\KalonLoader.Core\Libs\FileIO.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Libs\KalonLoader\Console.cpp" />
     <ClCompile Include="Libs\KalonLoader\FileIO.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\KalonLoader.Core\Libs\Console.h" />
-    <ClInclude Include="..\KalonLoader.Core\Libs\FileIO.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Libs\KalonLoader\Console.h" />
     <ClInclude Include="Libs\KalonLoader\FileIO.h" />
+    <ClInclude Include="Libs\KalonLoader\NativeCore.h" />
     <ClInclude Include="Libs\QuickDllProxy\DllProxy.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

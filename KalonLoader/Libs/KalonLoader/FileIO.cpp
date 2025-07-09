@@ -4,11 +4,13 @@
 #include <fstream>
 #include <filesystem>
 
+#include "Console.h"
+
 // this is required if using FileIO for your clients files & assets
 inline bool FileIO::setupClientPath(std::string clientName)
 {
     if (clientName.empty()) {
-        Console::Log("KalonLoader.Core", "Client name is empty, please provide a valid name.");
+        Console::Log("KalonLoader", "Client name is empty, please provide a valid name.");
         return false;
     }
     name = clientName;
@@ -32,7 +34,7 @@ inline std::string FileIO::getClientPath()
 {
     if (name.empty())
     {
-        Console::Log("KalonLoader.Core", "Client name is not set, please call setupClientPath() first.");
+        Console::Log("KalonLoader", "Client name is not set, please call setupClientPath() first.");
         return "";
     }
 
@@ -61,7 +63,7 @@ inline void FileIO::writeFile(const std::string& filePath, const std::string& co
         file << content;
         file.close();
     }
-    else Console::Log("KalonLoader.Core", "Unable to open the file for writing: %s", filePath.c_str());
+    else Console::Log("KalonLoader", "Unable to open the file for writing: %s", filePath.c_str());
 }
 
 inline std::string FileIO::readFile(const std::string& filePath, bool noError)
@@ -84,7 +86,7 @@ inline std::string FileIO::readFile(const std::string& filePath, bool noError)
             return content;
         }
 
-        Console::Log("KolanLoader.Core", "Unable to open the file for reading");
+        Console::Log("KolanLoader", "Unable to open the file for reading");
     }
     return content;
 }

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KalonLoader", "KalonLoader\KalonLoader.vcxproj", "{E9FBAE9A-8481-4374-BADE-796B3DAABB05}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KalonLoader.Core", "KalonLoader.Core\KalonLoader.Core.vcxproj", "{8A6F38D5-B238-4631-8489-98F84D62576D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,14 +21,6 @@ Global
 		{E9FBAE9A-8481-4374-BADE-796B3DAABB05}.Release|x64.Build.0 = Release|x64
 		{E9FBAE9A-8481-4374-BADE-796B3DAABB05}.Release|x86.ActiveCfg = Release|Win32
 		{E9FBAE9A-8481-4374-BADE-796B3DAABB05}.Release|x86.Build.0 = Release|Win32
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Debug|x64.ActiveCfg = Debug|x64
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Debug|x64.Build.0 = Debug|x64
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Debug|x86.ActiveCfg = Debug|Win32
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Debug|x86.Build.0 = Debug|Win32
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Release|x64.ActiveCfg = Release|x64
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Release|x64.Build.0 = Release|x64
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Release|x86.ActiveCfg = Release|Win32
-		{8A6F38D5-B238-4631-8489-98F84D62576D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

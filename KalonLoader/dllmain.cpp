@@ -57,6 +57,9 @@ void HandleException(DllProxy::ErrorCode Code)
 #include "Libs/QuickDllProxy/DllProxy.h"
 
 #include "Libs/KalonLoader/Console.h"
+
+#include "Utils.h"
+#include "Libs/KalonLoader/NativeCore.h"
 #include "Config.h"
 
 #include "Libs/KalonLoader/FileIO.h"
