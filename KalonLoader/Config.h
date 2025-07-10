@@ -1,4 +1,6 @@
 #include <string>
+#include <filesystem>
+#include <winrt/Windows.Storage.h>
 
 #ifndef CONFIG_H
 #define CONFIG_H
