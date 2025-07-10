@@ -177,6 +177,8 @@
     <ClInclude Include="Libs\minhook\minhook.h" />
     <ClInclude Include="Libs\minhook\trampoline.h" />
     <ClInclude Include="Libs\QuickDllProxy\DllProxy.h" />
+    <ClInclude Include="Libs\stb_image.h" />
+    <ClInclude Include="LoadScreen.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>

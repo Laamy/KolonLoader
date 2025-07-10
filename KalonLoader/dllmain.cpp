@@ -57,13 +57,19 @@ void HandleException(DllProxy::ErrorCode Code)
 #include "Libs/QuickDllProxy/DllProxy.h"
 
 #include "Libs/KalonLoader/Console.h"
-
 #include "Libs/KalonLoader/NativeCore.h"
 #include "Config.h"
 
 #include "Libs/KalonLoader/FileIO.h"
 
+#include "LoadScreen.h"
 //#define DEBUG
+
+//tmp
+std::string GetFileName(std::string path) {
+	size_t pos = path.find_last_of("\\/");
+	return (pos == std::string::npos) ? path : path.substr(pos + 1);
+}
 
 void Init() {
 	Console::CreateConsole(Config::Name.c_str());
@@ -78,7 +84,7 @@ void Init() {
 #endif
 
 	Console::Log(Config::Name.c_str(), "Initializing..");
-	
+
 	DllProxy::Initialize();
 	Config::LogInfo();
 
@@ -99,10 +105,19 @@ void Init() {
 
 	// NOTE: I might check for a registermod export so i can tell mods apart from unsupported mods so i can alert the user that the game will probably break or crash
 	for (const auto& mod : modLibs) {
-		Console::Log(Config::Name.c_str(), "Loading mod: %ls", mod.c_str());
-		if (!LoadLibraryA(mod.c_str()))
-			Console::Log(Config::Name.c_str(), "ERROR: Failed to load mod: %ls", mod.c_str());
+		LoadScreen::SetupTask([mod]() {
+			Console::Log(Config::Name.c_str(), "Loading mod: %ls", mod.c_str());
+			LoadScreen::SetStatusText("Loading " + GetFileName(mod));
+			if (!LoadLibraryA(mod.c_str()))
+				Console::Log(Config::Name.c_str(), "ERROR: Failed to load mod: %ls", mod.c_str());
+		});
 	}
+
+	LoadScreen::SetupTask([]() {
+		LoadScreen::SetStatusText("Done.");
+	});
+
+	LoadScreen::Launch();
 }
 
 void Uninit() {
