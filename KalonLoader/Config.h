@@ -1,4 +1,3 @@
-
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -18,7 +17,7 @@ namespace Config {
 		Console::Log(Name.c_str(), "------------------------------");
 		Console::Log(Name.c_str(), "Game Arch: x" + std::to_string(sizeof(void*) * 8)); // probably wont ever use
 		Console::Log(Name.c_str(), "Game Version: v" + GameConfig::GetGameVersion());
-		Console::Log(Name.c_str(), "Roaming State: " + GetRoamingState());
+		Console::Log(Name.c_str(), "Roaming State: " + GameConfig::GetRoamingState());
 		Console::Log(Name.c_str(), "------------------------------");
 	}
 }

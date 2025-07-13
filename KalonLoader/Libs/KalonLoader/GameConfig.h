@@ -5,6 +5,11 @@
 #include <string>
 #include <windows.h>
 #include <vector>
+#include <filesystem>
+#include <shlobj.h>
+#include <shlwapi.h>
+#include <appmodel.h>
+#include <iostream>
 
 #ifdef KOLAN_EXPORTS
 #define NATIVECORE_API __declspec(dllexport)
@@ -19,6 +24,8 @@ public: // some misc things
 
 	static std::string GetExecutablePath();
 	static std::string GetGameVersion();
+	static std::wstring GetFamilyName();
+	static std::string GetRoamingState();
 };
 
 #endif // !GAME_CONFIG_H

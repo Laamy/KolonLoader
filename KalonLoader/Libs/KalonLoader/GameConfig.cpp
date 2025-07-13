@@ -83,3 +83,38 @@ inline std::string GameConfig::GetGameVersion() {
 
 	return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
 }
+
+std::wstring GameConfig::GetFamilyName()
+{
+	static std::wstring cache;
+	if (!cache.empty())
+		return cache;
+
+	UINT32 length = 0;
+	GetCurrentPackageFamilyName(&length, nullptr);
+	cache = std::wstring(length, L'\0');
+	GetCurrentPackageFamilyName(&length, cache.data());
+
+	cache.resize(length - 1);
+	return cache;
+}
+
+// or you can just use winrt :P
+// - chyves
+// this loads before mc inits everything so i just decided to use winapi
+std::string GameConfig::GetRoamingState()
+{
+	static std::string cache;
+	if (!cache.empty())
+		return cache;
+
+	PWSTR appData = nullptr;
+	SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &appData);
+	std::wstring path(appData, wcslen(appData) - 8);
+	CoTaskMemFree(appData);
+
+	path += L"\\Local\\Packages\\" + GetFamilyName() + L"\\RoamingState\\";
+
+	cache = std::string(path.begin(), path.end());
+	return cache;
+}

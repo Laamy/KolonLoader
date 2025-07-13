@@ -5,6 +5,7 @@
 #include <filesystem>
 
 #include "Console.h"
+#include "GameConfig.h"
 
 // this is required if using FileIO for your clients files & assets
 inline bool FileIO::setupClientPath(std::string clientName)
@@ -22,12 +23,9 @@ inline bool FileIO::setupClientPath(std::string clientName)
     return false;
 }
 
-std::string GetRoamingState();
-
 inline std::string FileIO::getRoamingStatePath()
 {
-    // might add smth for preview clients
-    return GetRoamingState();//(getenv("AppData") + (std::string)"\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\");
+	return GameConfig::GetRoamingState();
 }
 
 inline std::string FileIO::getClientPath()
