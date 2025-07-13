@@ -1,12 +1,23 @@
 #include "LoadScreen.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "Libs/stb_image.h"
 #include <iostream>
 #include <TlHelp32.h>
 #include <chrono>
+#include <dwmapi.h>
 
-#include "Libs/KalonLoader/NativeCore.h"
+#pragma comment(lib, "dwmapi.lib")
+
+#include "Libs/KalonLoader/GameConfig.h"
+#include "Utils/BitmapUtils.h"
+
+void ApplyDwmStyle(HWND hwnd) {
+    DWORD pref = DWMWCP_ROUND;
+	DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, &pref, sizeof(pref));
+
+    MARGINS shadow = { -1 };
+	DwmExtendFrameIntoClientArea(hwnd, &shadow);
+}
 
 HWND LoadScreen::g_hwnd = nullptr;
 bool LoadScreen::g_running = false;
@@ -16,61 +27,6 @@ std::string LoadScreen::g_status;
 HBITMAP LoadScreen::hBitmap = NULL;
 int LoadScreen::width = NULL;
 int LoadScreen::height = NULL;
-
-//data\gui\dist\hbui\assets\FirstPoweredBeacon-886be5f1b4fb0ab7966a.png
-HBITMAP LoadPngAsBitmap(const char* path, int& outWidth, int& outHeight) {
-    int width, height, channels;
-    unsigned char* data = stbi_load(path, &width, &height, &channels, 4);
-    if (!data)
-        return NULL;
-
-    for (int i = 0; i < width * height; ++i)
-        std::swap(data[i * 4 + 0], data[i * 4 + 2]);
-
-    BITMAPINFO bmi = {};
-    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bmi.bmiHeader.biWidth = width;
-    bmi.bmiHeader.biHeight = -height;
-    bmi.bmiHeader.biPlanes = 1;
-    bmi.bmiHeader.biBitCount = 32;
-    bmi.bmiHeader.biCompression = BI_RGB;
-
-    void* bits = nullptr;
-    HDC hdc = GetDC(NULL);
-    HBITMAP hBitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &bits, NULL, 0);
-    ReleaseDC(NULL, hdc);
-
-    if (!hBitmap) {
-        stbi_image_free(data);
-        return NULL;
-    }
-
-    memcpy(bits, data, width * height * 4);
-    stbi_image_free(data);
-
-    outWidth = width;
-    outHeight = height;
-    return hBitmap;
-}
-
-HBITMAP ScaleBitmap(HBITMAP hBmp, int oWidth, int oHeight, int scale, HDC hdc) {
-	HDC srcDC = CreateCompatibleDC(hdc);
-	HDC dstDC = CreateCompatibleDC(hdc);
-	HBITMAP scaledBmp = CreateCompatibleBitmap(hdc, oWidth * scale, oHeight * scale);
-
-	HBITMAP oldSrcBmp = (HBITMAP)SelectObject(srcDC, hBmp);
-	HBITMAP oldDstBmp = (HBITMAP)SelectObject(dstDC, scaledBmp);
-
-	StretchBlt(dstDC, 0, 0, oWidth * scale, oHeight * scale,
-               srcDC, 0, 0, oWidth, oHeight, SRCCOPY);
-
-    SelectObject(srcDC, oldSrcBmp);
-    SelectObject(dstDC, oldDstBmp);
-	DeleteDC(srcDC);
-	DeleteDC(dstDC);
-
-    return scaledBmp;
-}
 
 float GetDeltaTime() {
     static auto last = std::chrono::high_resolution_clock::now();
@@ -191,18 +147,18 @@ void LoadScreen::Launch() {
     srand(static_cast<unsigned int>(time(nullptr)));
 	selected = backgrounds[rand() % backgrounds.size()];
 
-    std::string imgPath = NativeCore::GetExecutablePath() + "\\data\\gui\\dist\\hbui\\assets\\" + selected;
+    std::string imgPath = GameConfig::GetExecutablePath() + "\\data\\gui\\dist\\hbui\\assets\\" + selected;
 
     if (hBitmap == NULL)
         hBitmap = LoadPngAsBitmap(imgPath.c_str(), width, height);
 
     if (hBitmap) {
 		HDC screenDC = GetDC(NULL);
-		hBitmap = ScaleBitmap(hBitmap, width, height, 6, screenDC);
+		hBitmap = ScaleBitmap(hBitmap, width, height, 12, screenDC);
 		ReleaseDC(NULL, screenDC);
 
-        width *= 6;
-		height *= 6;
+        width *= 12;
+		height *= 12;
     }
 
     WNDCLASS wc{};
@@ -212,20 +168,21 @@ void LoadScreen::Launch() {
 
     RegisterClass(&wc);
 
-    const int width = 300;
-    const int height = 150;
+    const int width = 300*2;
+    const int height = 150*2;
     int screenX = GetSystemMetrics(SM_CXSCREEN);
     int screenY = GetSystemMetrics(SM_CYSCREEN);
     int x = (screenX - width) / 2;
     int y = (screenY - height) / 2;
 
     g_hwnd = CreateWindowEx(
-        0,
+        WS_EX_TOPMOST,
         wc.lpszClassName,
         nullptr,
         WS_POPUP,
         x, y, width, height,
         nullptr, nullptr, wc.hInstance, nullptr);
+    ApplyDwmStyle(g_hwnd);
 
     ShowWindow(g_hwnd, SW_SHOW);
 

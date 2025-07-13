@@ -21,12 +21,6 @@ public: // essential
 	// HookFunction so minhook isnt essential to install into mods (also i want to multiplex then later!)
 	static bool HookFunction(uintptr_t address, void* hook, void** original);
 	static bool UnhookFunction(uintptr_t address);
-
-public: // some misc things
-	static HWND GetCurrentFrameWindow();
-	static HWND GetCoreWindow();
-
-	static std::string GetExecutablePath();
 };
 
 #endif // !NATIVE_CORE_H
