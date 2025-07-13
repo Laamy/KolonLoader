@@ -3,6 +3,7 @@
 #include <Kalon/Console.h>
 #include <Kalon/FileIO.h>
 #include <Kalon/NativeCore.h>
+#include <Kalon/GameConfig.h>
 
 #pragma region MemoryUtils
 
@@ -20,18 +21,20 @@ R CallFunc(void* func, Args... args) { return ((R(*)(Args...))func)(args...); }
 
 #pragma endregion
 
+FileIO file;
+
+#include "IniBuilder.h"
+IniBuilder config;
+
 #include "Engine/GameCore.h"
 #include "Hook/FuncHook.h"
-
-FileIO file;
 
 void Init()
 {
 	Console::Log("ZoomMod", "Initializing ZoomMod...");
 
-	file = FileIO();
 	file.setupClientPath("ZoomMod");
-	file.createPath("sex");
+	config = IniBuilder("settings.ini");
 
 	InitHooks();
 }

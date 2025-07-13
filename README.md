@@ -48,6 +48,19 @@ Currently it's mostly the bare minimum:
 
 *Just compatibility stuff for mods that use the same functions.*
 
-- `static uintptr_t FetchOffset(const char* sidId, const char* sig)`
+- `static uintptr_t FetchOffset(const char* sidId, const char* sig)` - if the same sigid is used by 2 seperate mods then the second mod will use the cache
 - `static bool HookFunction(uintptr_t address, void* hook, void** original)`
 - `static bool UnhookFunction(uintptr_t address)`
+
+## GameConfig (STATIC)
+
+*Useful tools*
+
+- `static HWND GetCurrentFrameWindow()` - The ApplicationFrameWindow/host assigned to the current mc process
+- `static HWND GetCoreWindow()` - extract the renderwindow from the apphost
+- `static std::string GetExecutablePath()`
+- `static std::string GetGameVersion()` - 1.x.x (no preview numbers)
+
+## SystemConfig (STATIC)
+
+- `static std::string GetOS()`

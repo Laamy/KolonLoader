@@ -5,12 +5,12 @@
 #include "Console.h"
 #include "../../Utils.h"
 
-std::map<std::string, uintptr_t> NativeCore::g_Offsets = {};
+std::map<std::string, uintptr_t> NativeCore::m_Offsets = {};
 
 inline uintptr_t NATIVECORE_API NativeCore::FetchOffset(const char* sidId, const char* sig) {
-	auto it = g_Offsets.find(sidId);
+	auto it = m_Offsets.find(sidId);
 
-	if (it != g_Offsets.end())
+	if (it != m_Offsets.end())
 		return it->second;
 
 	uintptr_t sigResult = findSig_MS(sig);
@@ -20,11 +20,12 @@ inline uintptr_t NATIVECORE_API NativeCore::FetchOffset(const char* sidId, const
 		return {};
 	}
 
-	g_Offsets[sidId] = sigResult;
+	m_Offsets[sidId] = sigResult;
 	return sigResult;
 }
 
-// HookFunction so minhook isnt essential to install into mods (also i want to multiplex then later!)
+std::unordered_map<uintptr_t, int> hookIds{};
+// HookFunction so minhook isnt essential to install into mods (also i want to multiplex them later)
 inline bool NATIVECORE_API NativeCore::HookFunction(uintptr_t address, void* hook, void** original) {
 	static bool initialized = false;
 	if (!initialized) {
@@ -32,12 +33,17 @@ inline bool NATIVECORE_API NativeCore::HookFunction(uintptr_t address, void* hoo
 		initialized = true;
 	}
 
-	if (MH_CreateHook(reinterpret_cast<LPVOID>(address), hook, original) != MH_OK) {
+	if (hookIds.find(address) == hookIds.end())
+		hookIds[address] = 0;
+
+	auto hookID = hookIds[address]++;
+
+	if (MH_CreateHookEx(hookID, reinterpret_cast<LPVOID>(address), hook, original) != MH_OK) {
 		Console::Log("NativeCore", "Failed to create hook for address: 0x%p", address);
 		return false;
 	}
 
-	if (MH_EnableHook(reinterpret_cast<LPVOID>(address)) != MH_OK) {
+	if (MH_EnableHookEx(hookID, reinterpret_cast<LPVOID>(address)) != MH_OK) {
 		Console::Log("NativeCore", "Failed to enable hook for address: 0x%p", address);
 		return false;
 	}

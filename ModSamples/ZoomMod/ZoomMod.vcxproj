@@ -152,6 +152,7 @@
     <ClInclude Include="Hook\Hooks\BaseOptionsHook.h" />
     <ClInclude Include="Hook\Hooks\KeymapHook.h" />
     <ClInclude Include="Hook\Hooks\ZoomHook.h" />
+    <ClInclude Include="IniBuilder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

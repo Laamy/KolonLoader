@@ -35,5 +35,8 @@
     <ClInclude Include="Hook\Hooks\BaseOptionsHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IniBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

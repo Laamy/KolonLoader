@@ -9,12 +9,11 @@ public:
 };
 
 BaseOption* GetOption(uintptr_t _settings, unsigned __int16 offset) {
-	uintptr_t(__fastcall * v2)(uintptr_t, char**, uintptr_t);
 	uintptr_t optionPtr;
-	char* v9;
+	char* _tmp;//no clue what this is for and the ida sample i got it from discarded it
 
 	uintptr_t** funcPtr = reinterpret_cast<uintptr_t**>(*(uintptr_t*)_settings + 0x60);
-	optionPtr = CallFunc<uintptr_t, uintptr_t, char**, uintptr_t>(funcPtr[0], _settings, &v9, offset);
+	optionPtr = CallFunc<uintptr_t, uintptr_t, char**, uintptr_t>(funcPtr[0], _settings, &_tmp, offset);
 
 	return *(BaseOption**)optionPtr;
 }
@@ -30,20 +29,20 @@ bool BaseOptionsDetour(uintptr_t _this)
 	auto hideGui = GetOption(_this, hideStart2);
 
 	// BUG: f1 while in zoom will unhide hand
-	if (GameCore::IsZooming && !prevZoom)
+	if (GameCore::IsZooming != prevZoom)
 	{
-		hideCursor->Enabled(true);
-		hideHand->Enabled(true);
-		hideGui->Enabled(true);
-	}
+		auto isHideHand = (bool)config.GetOrDefault<int>("HideHand", 1);
+		auto isHideCursor = (bool)config.GetOrDefault<int>("HideCursor", 1);
+		auto isHideGui = (bool)config.GetOrDefault<int>("HideGui", 1);
 
-	if (!GameCore::IsZooming && prevZoom)
-	{
-		hideCursor->Enabled(false);
-		hideHand->Enabled(false);
-		hideGui->Enabled(false);
+		auto isZoom = GameCore::IsZooming;
+
+		hideCursor->Enabled(isZoom && isHideCursor);
+		hideHand->Enabled(isZoom && isHideHand);
+		hideGui->Enabled(isZoom && isHideGui);
+
+		prevZoom = isZoom;
 	}
-	prevZoom = GameCore::IsZooming;
 
 	return CallFunc<bool, uintptr_t>(
 		HookComps::__o__Options,
@@ -52,9 +51,7 @@ bool BaseOptionsDetour(uintptr_t _this)
 }
 
 class BaseOptionsHook : public FuncHook {
-public://Minecraft.Windows.exe+B45EE0
-	//Minecraft.Windows.exe+B426C0
-
+public:
 	bool Initialize() override {//48 8B 40 ? 0F 84 ? ? ? ? 41
 		uintptr_t offset = NativeCore::FetchOffset("BaseOptions", "40 53 48 83 EC 20 48 8B 01 48 8D");
 		if (!NativeCore::HookFunction(offset, &BaseOptionsDetour, &HookComps::__o__Options))
