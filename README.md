@@ -49,7 +49,7 @@ Currently it's mostly the bare minimum:
 *Just compatibility stuff for mods that use the same functions.*
 
 - `static uintptr_t FetchOffset(const char* sidId, const char* sig)` - if the same sigid is used by 2 seperate mods then the second mod will use the cache
-- `static bool HookFunction(uintptr_t address, void* hook, void** original)` - unimplemented (no multiplex)
+- `static bool HookFunction(uintptr_t address, void* hook, void** original)`
 - `static bool UnhookFunction(uintptr_t address)`
 
 ## GameConfig (STATIC)
