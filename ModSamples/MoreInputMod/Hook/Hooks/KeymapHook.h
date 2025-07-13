@@ -1,3 +1,4 @@
+#include <TlHelp32.h>
 #ifndef KEYMAP_HOOK_H
 #define KEYMAP_HOOK_H
 
@@ -11,11 +12,11 @@ std::string KeyToString(int keycode) {
 
 void KeypressDetour(int key, bool held)
 {
-	Console::Log("ZoomMod", "Key %s %s", KeyToString(key).c_str(), held ? "held" : "released");
+	Console::Log("MoreInputs", "Key %s %s", KeyToString(key).c_str(), held ? "held" : "released");
 
 	if (key == 'C')
 		GameCore::IsZooming = held;
-		
+				
 	return CallFunc<void, int, bool>(
 		HookComps::__o__Keypress,
 		key, held
@@ -28,11 +29,11 @@ public:
 		uintptr_t offset = NativeCore::FetchOffset("Keymap", "48 83 EC 48 ? ? C1 4C 8D");
 		if (!NativeCore::HookFunction(offset, &KeypressDetour, &HookComps::__o__Keypress))
 		{
-			Console::Log("ZoomMod", "Failed to hook keypress function");
+			Console::Log("MoreInputs", "Failed to hook keypress function");
 			return false;
 		}
 
-		Console::Log("ZoomMod", "Keymap hook initialized successfully %x", offset);
+		Console::Log("MoreInputs", "Keymap hook initialized successfully %x", offset);
 
 		return true;
 	}

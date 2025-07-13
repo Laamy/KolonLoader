@@ -52,11 +52,11 @@ public:
 		uintptr_t offset = NativeCore::FetchOffset("BaseOptions", "40 53 48 83 EC 20 48 8B 01 48 8D");
 		if (!NativeCore::HookFunction(offset, &BaseOptionsDetour, &HookComps::__o__Options))
 		{
-			Console::Log("ZoomMod", "Failed to hook BaseOptions function");
+			Console::Log("MoreInputs", "Failed to hook BaseOptions function");
 			return false;
 		}
 
-		Console::Log("ZoomMod", "Options initialized successfully at offset %x", offset);
+		Console::Log("MoreInputs", "Options initialized successfully at offset %x", offset);
 
 		return true;
 	}
