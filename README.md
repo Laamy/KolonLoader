@@ -60,6 +60,8 @@ Currently it's mostly the bare minimum:
 - `static HWND GetCoreWindow()` - extract the renderwindow from the apphost
 - `static std::string GetExecutablePath()`
 - `static std::string GetGameVersion()` - 1.x.x (no preview numbers)
+- `static std::wstring GetFamilyName()` - gets the current games family name
+- `static std::string GetRoamingState()`
 
 ## SystemConfig (STATIC)
 
