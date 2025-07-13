@@ -27,7 +27,7 @@ std::string GetRoamingState() {
 
 namespace Config {
 	std::string Name = "KolanLoader";
-	std::string Version = "v0.1.5 Open-Client";
+	std::string Version = "v0.1.6 Open-Client";
 
 	inline void LogInfo() {
 		Console::Log(Name.c_str(), "------------------------------");

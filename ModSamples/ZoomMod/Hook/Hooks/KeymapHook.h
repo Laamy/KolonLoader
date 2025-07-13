@@ -9,11 +9,25 @@ std::string KeyToString(int keycode) {
 	return "Unknown";
 }
 
+// SO SKETCHY
+int StringToKey(const std::string& keyName) {
+	for (int vk = 1; vk < 256; ++vk) {
+		UINT sc = MapVirtualKeyA(vk, MAPVK_VK_TO_VSC);
+		char buffer[64];
+		if (GetKeyNameTextA(sc << 16, buffer, sizeof(buffer)) != 0) {
+			if (keyName == buffer)
+				return vk;
+		}
+	}
+	return -1;
+}
+
 void KeypressDetour(int key, bool held)
 {
-	Console::Log("ZoomMod", "Key %s %s", KeyToString(key).c_str(), held ? "held" : "released");
+	//Console::Log("ZoomMod", "Key %s %s", KeyToString(key).c_str(), held ? "held" : "released");
 
-	if (key == 'C')
+	auto zoomKey = config.GetOrDefault<std::string>("ZoomKey", "C");
+	if (key == StringToKey(zoomKey))
 		GameCore::IsZooming = held;
 		
 	return CallFunc<void, int, bool>(

@@ -31,11 +31,15 @@ bool BaseOptionsDetour(uintptr_t _this)
 	// BUG: f1 while in zoom will unhide hand
 	if (GameCore::IsZooming != prevZoom)
 	{
+		auto isHideHand = (bool)config.GetOrDefault<int>("HideHand", 1);
+		auto isHideCursor = (bool)config.GetOrDefault<int>("HideCursor", 1);
+		auto isHideGui = (bool)config.GetOrDefault<int>("HideGui", 1);
+
 		auto isZoom = GameCore::IsZooming;
 
-		hideCursor->Enabled(isZoom);
-		hideHand->Enabled(isZoom);
-		hideGui->Enabled(isZoom);
+		hideCursor->Enabled(isZoom && isHideCursor);
+		hideHand->Enabled(isZoom && isHideHand);
+		hideGui->Enabled(isZoom && isHideGui);
 
 		prevZoom = isZoom;
 	}

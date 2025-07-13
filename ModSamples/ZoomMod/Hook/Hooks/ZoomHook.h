@@ -18,7 +18,10 @@ void animateTickDetour(LevelRendererPlayer* _this)
 	);
 
 	if (GameCore::IsZooming)
-		_this->Zoom(0.3f);
+	{
+		auto factor = config.GetOrDefault<float>("FovFactor", 0.3f);
+		_this->Zoom(factor);
+	}
 }
 
 class ZoomHook : public FuncHook {
